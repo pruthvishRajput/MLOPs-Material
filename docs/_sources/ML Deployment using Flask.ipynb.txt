@@ -1,0 +1,634 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "1f5391a5",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# ML Deployment using Flask\n",
+    "## Deploy the ML project using Flask\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ba5538f4",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Deployment of House Rate Prediction\n",
+    "\n",
+    "To predict the new data, we have to deploy the model (e.g., over the internet) so that the outside world can use it.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "266dcfe2",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "![FlaskICON](Images/FlaskIcon.png)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3faa80d5",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "#### Flask\n",
+    "- Flask is a Python-based micro framework used for developing small-scale websites. \n",
+    "\n",
+    "- Flask is very easy to make Restful APIs using python. \n",
+    "\n",
+    "- As of now, we have developed a model i.e `model.pkl` , which can predict the house rate.\n",
+    "\n",
+    "Quick start project using flask: [link](https://flask.palletsprojects.com/en/2.3.x/quickstart/)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c020908b",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "#### Step:1 Creation for HTML form\n",
+    "- We will now design a web application where the user will input the feature value -- `house area` using HTML form with name `index.html`.\n",
+    "\n",
+    "- The input data will be given to the model.\n",
+    "\n",
+    "- The model will predict the house rate for the value feed by the user.\n",
+    "\n",
+    "  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7dbb945b",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "\n",
+    "<html>\n",
+    "<body>\n",
+    "\t<h5>House Rate Prediction Form</h5>\n",
+    "<br>\n",
+    "\n",
+    "<div>\n",
+    "<form action=\"/result\" method=\"POST\">\n",
+    "\t<label for=\"area_feature\">House Area [in sq. feet] : </label>\n",
+    "\t<input type=\"text\" id=\"area_feature\" name=\"area_feature\"> range:[1500-15000]\n",
+    "\t<br>\n",
+    "    <br>\n",
+    "\t<input type=\"submit\" value=\"Submit\">\n",
+    "</form>\n",
+    "</div>\n",
+    "</body>\n",
+    "</html>\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7f5f7b4f",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "\n",
+    "\n",
+    "##### index.html:\n",
+    "```html\n",
+    "<html>\n",
+    "<body>\n",
+    "\t<h3>House Rate Prediction Form</h3>\n",
+    "<br>\n",
+    "\n",
+    "<div>\n",
+    "<form action=\"/result\" method=\"POST\">\n",
+    "\t<label for=\"area_feature\">House Area [in sq. feet] : </label>\n",
+    "\t<input type=\"text\" id=\"area_feature\" name=\"area_feature\"> range:[1500-15000]\n",
+    "\t<br>\n",
+    "    <br>\n",
+    "\t<input type=\"submit\" value=\"Submit\">\n",
+    "</form>\n",
+    "</div>\n",
+    "</body>\n",
+    "</html>\n",
+    "```\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8a276108",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "\n",
+    "- Once the data is posted from the form, it should be fed to the model.\n",
+    "- Further, the script can load the trained model.\n",
+    "- The script can then use the model to predict the house rate based on the feed data.\n",
+    "- The prediction is then displayed to the user based on `result.html` file.\n",
+    "  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3a598cdb",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "\n",
+    "\n",
+    "**result.html**\n",
+    "```html\n",
+    "<!doctype html>\n",
+    "<html>\n",
+    "<body>\n",
+    "\t<h1> The predicted amount of house is {{ prediction }}</h1>\n",
+    "</body>\n",
+    "</html>\n",
+    "\n",
+    "```\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4806480f",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "#### Step:2  Flask Script\n",
+    "\n",
+    "The script must do the following tasks\n",
+    "\n",
+    "- *Task-1:* Receive the data entered by the user in `X_test` array\n",
+    "- *Task-2:* Make the prediction using following steps\n",
+    "    - Load the `scalar` and `model` pickle files. \n",
+    "    - Apply normalization on the `X_test` data\n",
+    "    - Apply the `model.predict()` method on the `X_test_Normalized` data to obtain the prediction\n",
+    "- *Task-3:* return the prediction to render the display to the user using `result.html` template"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "80e6f3ee",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "##### Task-1: Receive the data entered by the user in `X_test` array\n",
+    "\n",
+    "```python\n",
+    "from flask import Flask, render_template, jsonify, request\n",
+    "\n",
+    "app = Flask(__name__)\n",
+    "\n",
+    "\n",
+    "@app.route('/result', methods = ['POST'])\n",
+    "def result():\n",
+    "\tif request.method == 'POST':\n",
+    "\t\tto_predict_list = request.form.to_dict()\n",
+    "\t\tto_predict_list = list(to_predict_list.values())\n",
+    "\t\tto_predict_list = list(map(int, to_predict_list))\n",
+    "        \n",
+    "@app.route(\"/\")\n",
+    "def hello_world():\n",
+    "    return render_template(\"index.html\")\n",
+    "\t\t\n",
+    "```\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e9ad4e00",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "##### Task-2: Make the prediction using following steps\n",
+    "\n",
+    "    - Load the `scalar` and `model` pickle files. \n",
+    "    - Apply normalization on the `X_test` data\n",
+    "    - Apply the `model.predict()` method on the `X_test_Normalized` data to obtain the prediction\n",
+    "    \n",
+    "```python\n",
+    "import numpy as np\n",
+    "import pickle\n",
+    "\n",
+    "def ValuePredictor(to_predict_list):\n",
+    "\tX_test = np.array(to_predict_list).reshape(1, 1)\n",
+    "\t\n",
+    "\t#Load the instance of Standarscalar object\n",
+    "\tscaler = pickle.load(open(\"scaler.pkl\", \"rb\"))\n",
+    "\t#Normalize the data\n",
+    "\tX_test_Normalized = scaler.transform(X_test)\n",
+    "\n",
+    "\tloaded_model = pickle.load(open(\"model.pkl\", \"rb\"))\n",
+    "\tresult = loaded_model.predict(X_test_Normalized)\n",
+    "\treturn result[0]\n",
+    "```\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5d760225",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "##### Task-3: return the prediction to render the display to the user using `result.html` template\n",
+    "\n",
+    "```python\n",
+    "\t\treturn render_template(\"result.html\", prediction = prediction)\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "483cc7cf",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "\n",
+    "##### Combining the tasks:\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "526dea24",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```python\n",
+    "from flask import Flask, render_template, jsonify, request\n",
+    "import numpy as np\n",
+    "import pickle\n",
+    "\n",
+    "app = Flask(__name__)\n",
+    "\n",
+    "def ValuePredictor(to_predict_list):\n",
+    "\tX_test = np.array(to_predict_list).reshape(1, 1)\n",
+    "\t\n",
+    "\t#Load the instance of Standarscalar object\n",
+    "\tscaler = pickle.load(open(\"scaler.pkl\", \"rb\"))\n",
+    "\t#Normalize the data\n",
+    "\tX_test_Normalized = scaler.transform(X_test)\n",
+    "\n",
+    "\tloaded_model = pickle.load(open(\"model.pkl\", \"rb\"))\n",
+    "\tresult = loaded_model.predict(X_test_Normalized)\n",
+    "\treturn result[0]\n",
+    "\n",
+    "\n",
+    "@app.route('/result', methods = ['POST'])\n",
+    "def result():\n",
+    "\tif request.method == 'POST':\n",
+    "\t\tto_predict_list = request.form.to_dict()\n",
+    "\t\tto_predict_list = list(to_predict_list.values())\n",
+    "\t\tto_predict_list = list(map(int, to_predict_list))\n",
+    "\t\t\n",
+    "\t\tprediction = ValuePredictor(to_predict_list)\n",
+    "\t\t\n",
+    "\t\treturn render_template(\"result.html\", prediction = prediction)\n",
+    "\t\t\n",
+    "@app.route(\"/\")\n",
+    "def hello_world():\n",
+    "    return render_template(\"index.html\")\n",
+    "```\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "87e38f16",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "\n",
+    "\n",
+    "We will execute the flask application from local system using the following command:\n",
+    "    \n",
+    "```bash\n",
+    "flask --app script.py  run\n",
+    "```\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ba858db9",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "\n",
+    "\n",
+    "##### User interface for getting the house area feature\n",
+    "\n",
+    "![Webpage_Flask1](Images/Docker/Flask_WebPage.png)\n"
+   ]
+  },
+  {
+   "cell_type": "raw",
+   "id": "fc039578-08dc-4bbf-b6ff-b9c660f6d83f",
+   "metadata": {},
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "970bcee3-142e-4ad4-8921-bb604a13877b",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "\n",
+    "##### Display of house rate prediction to user\n",
+    "\n",
+    "![Webpage_Flask1](Images/Docker/Flask_Response.png)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "fbb3b1a0",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "\n",
+    "## Deployment of house rate prediction model in docker using `Flask`\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9489e006",
+   "metadata": {},
+   "source": [
+    "\n",
+    "- We will use the `Gunicorn` for deploying the ML project\n",
+    "- `Green Unicorn` is a Python Web Server Gateway Interface HTTP server.\n",
+    "\n",
+    "Update the requirements.txt to include the following files:\n",
+    "\n",
+    "```\n",
+    "flask\n",
+    "gunicorn\n",
+    "```\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ecc5dc9d",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "\n",
+    "##### Create the folder `RequiredFilesForDocker`. It shoud consist of following files:\n",
+    "\n",
+    "    \n",
+    "- `templates`: folder containing two html templates -- index.html and result.html\n",
+    "- `model.pkl`: pickle file of trained model\n",
+    "- `requirements.txt`: a list of required libraries\n",
+    "- `scaler.pkl`: pickle file of scalar object used for normalizing the data\n",
+    "- `script.py`: flask script to host the model over the webpage\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e84afef5",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "\n",
+    "```dockerfile\n",
+    "#Using the base image with Python 3.10\n",
+    "# FROM python:3.10\n",
+    "FROM python:3.10\n",
+    " \n",
+    "#Set our working directory as app\n",
+    "WORKDIR /app \n",
+    "\n",
+    "# Copy the model's directory and server.py files\n",
+    "#COPY requirements.txt ./requirements.txt\n",
+    "#COPY script.py ./script.py\n",
+    "#COPY model.pkl ./model.pkl\n",
+    "#COPY scaler.pkl ./scaler.pkl\n",
+    "\n",
+    "COPY RequiredFilesForDocker ./\n",
+    "\n",
+    "#Installing Python packages through requirements.txt file\n",
+    "RUN pip install -r requirements.txt\n",
+    "\n",
+    "\n",
+    "#Exposing port 5000 from the container\n",
+    "EXPOSE 5000\n",
+    "#Starting the Python application\n",
+    "CMD [\"gunicorn\", \"--bind\", \"0.0.0.0:5000\", \"script:app\"]\n",
+    "```\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "fdd362be",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "\n",
+    "##### Build the docker image using `dockerFile`\n",
+    "\n",
+    "Now, build the above docker file using following docker command:\n",
+    "    \n",
+    "```bash\n",
+    "foo@bar: $ sudo docker build -t house_rate_prediction_deployment -f dockerFile .\n",
+    "```\n"
+   ]
+  },
+  {
+   "cell_type": "raw",
+   "id": "02d92141-c9eb-4305-ab97-0b547460743e",
+   "metadata": {},
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "527429e5",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "\n",
+    "##### Run the docker image\n",
+    "\n",
+    "Now, build the above docker file using following docker command:\n",
+    "    \n",
+    "```bash\n",
+    "foo@bar: $ sudo docker run --name hrp_d_container -p 5000:5000 house_rate_prediction_deployment\n",
+    "```\n",
+    "\n",
+    "*Note:* Use -d to run it in detached mode.\n"
+   ]
+  },
+  {
+   "cell_type": "raw",
+   "id": "c695d29f-9ec4-4384-a9ba-5044778adf22",
+   "metadata": {},
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "44bba581-8ca5-4762-b474-f8ed558f2eab",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "\n",
+    "**Ouput**\n",
+    "\n",
+    "HTML form to get value from user\n",
+    "\n",
+    "![InputFromUSer](Images/Docker/Docker_Flask_WebPage.png)\n",
+    "\n",
+    "\n",
+    "View displaying the house rate prediction to the user\n",
+    "\n",
+    "![Response](Images/Docker/Docker_Flask_Response.png)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c831cda7-55f3-472d-98b9-c4ebadf648e9",
+   "metadata": {},
+   "source": [
+    "#### Run the docker container using docker `compose`\n",
+    "- [Compose](https://docs.docker.com/compose/) is a tool for defining and running multi-container Docker applications. \n",
+    "- With Compose, you use a YAML file to configure your application’s services. Then, with a single command, you create and start all the services from your configuration.\n",
+    "\n",
+    "- Compose works in all environments; production, staging, development, testing, as well as CI workflows. It also has commands for managing the whole lifecycle of your application:\n",
+    "    - Start, stop, and rebuild services\n",
+    "    - View the status of running services\n",
+    "    - Stream the log output of running services\n",
+    "    - Run a one-off command on a service\n",
+    "\n",
+    "The key features of Compose that make it effective are:\n",
+    "\n",
+    "    - Have multiple isolated environments on a single host\n",
+    "    - Preserve volume data when containers are created\n",
+    "    - Only recreate containers that have changed\n",
+    "    - Support variables and moving a composition between environments\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1981cbff-02b8-4875-9f82-07f4b58b5671",
+   "metadata": {},
+   "source": [
+    "Create the new file named `compose.yaml`\n",
+    "\n",
+    "Now, place the following code into the file\n",
+    "\n",
+    "```yaml\n",
+    "services:\n",
+    "  hrp_d_Container:\n",
+    "    image: house_rate_prediction_deployment\n",
+    "    ports: \n",
+    "      - 5000:5000\n",
+    "```\n",
+    "\n",
+    "Then, run the following command:\n",
+    "\n",
+    "```bash\n",
+    "foo@bar: $ sudo docker compose -f compose.yaml up\n",
+    "```"
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.10"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

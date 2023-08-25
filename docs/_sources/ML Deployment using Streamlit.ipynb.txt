@@ -1,0 +1,744 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "fc399b10-900a-427f-9291-a0a547699198",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "slide"
+    },
+    "tags": []
+   },
+   "source": [
+    "# Other options of deployment using `Streamlit` and `Heroku` -- Platform as a Service\n",
+    "\n",
+    "## ML Deployment using Streamlit"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bef365fe-bf18-4d7d-a5c4-2eb2ca78e4b5",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "slide"
+    },
+    "tags": []
+   },
+   "source": [
+    "### Deployment using Streamlit\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "12184d9c-82be-4f00-8757-e6770a1311b2",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "Streamlit\n",
+    "- Streamlit is an open-source Python library that makes it easy to create and share beautiful, custom web apps for machine learning and data science.\n",
+    "- In just a few minutes you can build and deploy powerful data apps. So [let's get started!](https://docs.streamlit.io/library/get-started/)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "77723450-a86f-4f34-b61c-f1daba864c3a",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "Deployment of IRIS plan classification:\n",
+    "\n",
+    "- Using [IRIS dataset](https://www.kaggle.com/datasets/uciml/iris)\n",
+    "- The Iris dataset was used in R.A. Fisher's classic 1936 paper.\n",
+    "- The Use of Multiple Measurements in Taxonomic Problems, and can also be found on the UCI Machine Learning Repository.\n",
+    "\n",
+    "![IRIS Image](Images/Docker/IRIS_dataset.jpg)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "32705a7c-a550-4d02-9468-d99d44fcd092",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "- It includes three iris species with 50 samples each as well as some properties about each flower.\n",
+    "- One flower species is linearly separable from the other two, but the other two are not linearly separable from each other. \n",
+    "\n",
+    "The columns in this dataset are:\n",
+    "\n",
+    "    Id\n",
+    "    SepalLengthCm\n",
+    "    SepalWidthCm\n",
+    "    PetalLengthCm\n",
+    "    PetalWidthCm\n",
+    "    Species"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f10b35c6-3e3d-42f3-9056-3b106a414af5",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "#### Training the model"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9f441830-339a-4db8-9a4f-6a6f835f5cb3",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "##### Import the data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "b6555231-a316-4d29-8ca7-342dfc598b91",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": ""
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Id</th>\n",
+       "      <th>SepalLengthCm</th>\n",
+       "      <th>SepalWidthCm</th>\n",
+       "      <th>PetalLengthCm</th>\n",
+       "      <th>PetalWidthCm</th>\n",
+       "      <th>Species</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1</td>\n",
+       "      <td>5.1</td>\n",
+       "      <td>3.5</td>\n",
+       "      <td>1.4</td>\n",
+       "      <td>0.2</td>\n",
+       "      <td>Iris-setosa</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2</td>\n",
+       "      <td>4.9</td>\n",
+       "      <td>3.0</td>\n",
+       "      <td>1.4</td>\n",
+       "      <td>0.2</td>\n",
+       "      <td>Iris-setosa</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>3</td>\n",
+       "      <td>4.7</td>\n",
+       "      <td>3.2</td>\n",
+       "      <td>1.3</td>\n",
+       "      <td>0.2</td>\n",
+       "      <td>Iris-setosa</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>4</td>\n",
+       "      <td>4.6</td>\n",
+       "      <td>3.1</td>\n",
+       "      <td>1.5</td>\n",
+       "      <td>0.2</td>\n",
+       "      <td>Iris-setosa</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>5</td>\n",
+       "      <td>5.0</td>\n",
+       "      <td>3.6</td>\n",
+       "      <td>1.4</td>\n",
+       "      <td>0.2</td>\n",
+       "      <td>Iris-setosa</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Id  SepalLengthCm  SepalWidthCm  PetalLengthCm  PetalWidthCm      Species\n",
+       "0   1            5.1           3.5            1.4           0.2  Iris-setosa\n",
+       "1   2            4.9           3.0            1.4           0.2  Iris-setosa\n",
+       "2   3            4.7           3.2            1.3           0.2  Iris-setosa\n",
+       "3   4            4.6           3.1            1.5           0.2  Iris-setosa\n",
+       "4   5            5.0           3.6            1.4           0.2  Iris-setosa"
+      ]
+     },
+     "execution_count": 1,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "\n",
+    "df = pd.read_csv('/home/pruthvish/Ganpat University/Odd_2023_2024/7_MLOPs/TheoryMaterials/Demonstrations/Docker/IRIS_Data/Iris.csv')\n",
+    "df.head()\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "908bc1af-0053-48a5-8b56-8168be9e56a9",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "##### Preprocessing"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "1f88d5fc-5ec1-4e81-bbeb-fe40362404d8",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": ""
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "# Dropping the Id column\n",
+    "df.drop('Id', axis = 1, inplace = True)\n",
+    "\n",
+    "# Renaming the target column into numbers to aid training of the model\n",
+    "df['Species']= df['Species'].map({'Iris-setosa':0, 'Iris-versicolor':1, 'Iris-virginica':2})\n",
+    "\n",
+    "# splitting the data into the columns which need to be trained(X) and the target column(y)\n",
+    "X = df.iloc[:, :-1]\n",
+    "y = df.iloc[:, -1]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ce8df528-6e01-4ffa-8229-4ac658f464e5",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "##### Test-train split"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "e72cde6c-15b2-4fcf-bd85-0c89cd386881",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": ""
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "# splitting data into training and testing data with 30 % of data as testing data respectively\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6a0d579d-5971-4068-bddb-9157f22ae355",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "##### Importing the random forest classifier model and training it on the dataset"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "9f25cbbc-d651-4d66-be0f-e7b79cb04fe9",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": ""
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.9777777777777777\n"
+     ]
+    }
+   ],
+   "source": [
+    "# importing the random forest classifier model and training it on the dataset\n",
+    "from sklearn.ensemble import RandomForestClassifier\n",
+    "classifier = RandomForestClassifier()\n",
+    "classifier.fit(X_train, y_train)\n",
+    "\n",
+    "# predicting on the test dataset\n",
+    "y_pred = classifier.predict(X_test)\n",
+    "\n",
+    "# finding out the accuracy\n",
+    "from sklearn.metrics import accuracy_score\n",
+    "score = accuracy_score(y_test, y_pred)\n",
+    "print(score)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ee71d454-4b82-4923-8022-bea3a94dd929",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "##### Save the model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "e037790b-d71e-4455-b1da-a83969bdf272",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": ""
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "import pickle\n",
+    "pickle_out = open(\"classifier.pkl\", \"wb\")\n",
+    "pickle.dump(classifier, pickle_out)\n",
+    "pickle_out.close()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2ebcd066-da30-47ed-93c0-80ed487b9a1e",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "#### Deploy the model using Streamlit"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0e85aa7d-b60a-4cf6-8e32-a42fef793ed4",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "##### Task 1: Create the main function specifying the HTML view for user\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f0c3b6af-7dd9-4e3c-af50-157f10fc737a",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": ""
+    },
+    "tags": []
+   },
+   "source": [
+    "```python\n",
+    "# this is the main function in which we define our webpage\n",
+    "def main():\n",
+    "\t# giving the webpage a title\n",
+    "\tst.title(\"Iris Flower Prediction\")\n",
+    "\t\n",
+    "\t# here we define some of the front end elements of the web page like\n",
+    "\t# the font and background color, the padding and the text to be displayed\n",
+    "\thtml_temp = \"\"\"\n",
+    "\t<div style =\"background-color:yellow;padding:13px\">\n",
+    "\t<h1 style =\"color:black;text-align:center;\">Streamlit Iris Flower Classifier ML App </h1>\n",
+    "\t</div>\n",
+    "\t\"\"\"\n",
+    "\t\n",
+    "\t# this line allows us to display the front end aspects we have\n",
+    "\t# defined in the above code\n",
+    "\tst.markdown(html_temp, unsafe_allow_html = True)\n",
+    "\t\n",
+    "\t# the following lines create text boxes in which the user can enter\n",
+    "\t# the data required to make the prediction\n",
+    "\tsepal_length = st.text_input(\"Sepal Length\", \"Type Here\")\n",
+    "\tsepal_width = st.text_input(\"Sepal Width\", \"Type Here\")\n",
+    "\tpetal_length = st.text_input(\"Petal Length\", \"Type Here\")\n",
+    "\tpetal_width = st.text_input(\"Petal Width\", \"Type Here\")\n",
+    "\tresult =\"\"\n",
+    "\t\n",
+    "\t# the below line ensures that when the button called 'Predict' is clicked,\n",
+    "\t# the prediction function defined above is called to make the prediction\n",
+    "\t# and store it in the variable result\n",
+    "\tif st.button(\"Predict\"):\n",
+    "\t\tresult = prediction(sepal_length, sepal_width, petal_length, petal_width)\n",
+    "\tst.success('The output is {}'.format(result))\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7419e2c4-4d20-4d45-ac3c-d613fb90468b",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "##### Task 2: Loading the model and prediction function\n",
+    "```python\n",
+    "# loading in the model to predict on the data\n",
+    "pickle_in = open('classifier.pkl', 'rb')\n",
+    "classifier = pickle.load(pickle_in)\n",
+    "\n",
+    "\n",
+    "# defining the function which will make the prediction using\n",
+    "# the data which the user inputs\n",
+    "def prediction(sepal_length, sepal_width, petal_length, petal_width):\n",
+    "\n",
+    "\tprediction = classifier.predict(\n",
+    "\t\t[[sepal_length, sepal_width, petal_length, petal_width]])\n",
+    "\tprint(prediction)\n",
+    "\treturn prediction\n",
+    "```\t"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "794ac99d-35d3-496d-9506-afc633bf56cf",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "##### Combining the code"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "53086e82-9673-416f-9cd4-84d1c554b29d",
+   "metadata": {
+    "editable": true,
+    "raw_mimetype": "",
+    "slideshow": {
+     "slide_type": ""
+    },
+    "tags": []
+   },
+   "source": [
+    "Create the new `app.py` file and save the following python code in it.\n",
+    "\n",
+    "```python\n",
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import pickle\n",
+    "import streamlit as st\n",
+    "\n",
+    "# loading in the model to predict on the data\n",
+    "pickle_in = open('classifier.pkl', 'rb')\n",
+    "classifier = pickle.load(pickle_in)\n",
+    "\n",
+    "# defining the function which will make the prediction using\n",
+    "# the data which the user inputs\n",
+    "def prediction(sepal_length, sepal_width, petal_length, petal_width):\n",
+    "\n",
+    "\tprediction = classifier.predict(\n",
+    "\t\t[[sepal_length, sepal_width, petal_length, petal_width]])\n",
+    "\tprint(prediction)\n",
+    "\treturn prediction\n",
+    "\t\n",
+    "\n",
+    "# this is the main function in which we define our webpage\n",
+    "def main():\n",
+    "\t# giving the webpage a title\n",
+    "\tst.title(\"Iris Flower Prediction\")\n",
+    "\t\n",
+    "\t# here we define some of the front end elements of the web page like\n",
+    "\t# the font and background color, the padding and the text to be displayed\n",
+    "\thtml_temp = \"\"\"\n",
+    "\t<div style =\"background-color:yellow;padding:13px\">\n",
+    "\t<h1 style =\"color:black;text-align:center;\">Streamlit Iris Flower Classifier ML App </h1>\n",
+    "\t</div>\n",
+    "\t\"\"\"\n",
+    "\t\n",
+    "\t# this line allows us to display the front end aspects we have\n",
+    "\t# defined in the above code\n",
+    "\tst.markdown(html_temp, unsafe_allow_html = True)\n",
+    "\t\n",
+    "\t# the following lines create text boxes in which the user can enter\n",
+    "\t# the data required to make the prediction\n",
+    "\tsepal_length = st.text_input(\"Sepal Length\", \"Type Here\")\n",
+    "\tsepal_width = st.text_input(\"Sepal Width\", \"Type Here\")\n",
+    "\tpetal_length = st.text_input(\"Petal Length\", \"Type Here\")\n",
+    "\tpetal_width = st.text_input(\"Petal Width\", \"Type Here\")\n",
+    "\tresult =\"\"\n",
+    "\t\n",
+    "\t# the below line ensures that when the button called 'Predict' is clicked,\n",
+    "\t# the prediction function defined above is called to make the prediction\n",
+    "\t# and store it in the variable result\n",
+    "\tif st.button(\"Predict\"):\n",
+    "\t\tresult = prediction(sepal_length, sepal_width, petal_length, petal_width)\n",
+    "\tst.success('The output is {}'.format(result))\n",
+    "\t\n",
+    "if __name__=='__main__':\n",
+    "\tmain()\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b6c4afc1-5cd9-4bbc-aabd-1657eac71cc3",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    },
+    "tags": []
+   },
+   "source": [
+    "#### Run the Streamlit server\n",
+    "Command: \n",
+    "```bash\n",
+    "    foo@bar:$ streamlit run app.py\n",
+    "\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "db9892a8-ced1-4fd8-a21a-8a2e68de484f",
+   "metadata": {},
+   "source": [
+    "### Host machine learning model using streamlit and docker\n",
+    "\n",
+    "(Reference [link](https://docs.streamlit.io/knowledge-base/tutorials/deploy/docker))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "520d30b6-cb7a-4601-a487-32b7fa1dd0d2",
+   "metadata": {},
+   "source": [
+    "#### Step 1: Create the folder RequiredFilesForDocker. It shoud consist of following files:\n",
+    "\n",
+    "    model.pkl: pickle file of trained model\n",
+    "    requirements.txt: a list of required libraries\n",
+    "    app.py: streamlit app script to host the model over the webpage\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8a0b89e7-5669-4739-93ef-56ececd97b51",
+   "metadata": {},
+   "source": [
+    "#### Step 2: Create the docker file (let say using name `dockerFile`)\n",
+    "\n",
+    "```dockerfile\n",
+    "\n",
+    "#Using the base image with Python 3.10\n",
+    "# FROM python:3.10\n",
+    "FROM python:3.10\n",
+    " \n",
+    "#Set our working directory as app\n",
+    "WORKDIR /app \n",
+    "\n",
+    "COPY RequiredFilesForDocker ./\n",
+    "\n",
+    "#Installing Python packages through requirements.txt file\n",
+    "RUN pip install -r requirements.txt\n",
+    "\n",
+    "\n",
+    "#Exposing port 8501 from the container\n",
+    "EXPOSE 8501\n",
+    "#Starting the Python application\n",
+    "#CMD [\"gunicorn\", \"--bind\", \"0.0.0.0:5000\", \"script:app\"]\n",
+    "ENTRYPOINT [\"streamlit\", \"run\", \"app.py\", \"--server.port=8501\", \"--server.address=0.0.0.0\"]\n",
+    "```\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "238d14e2-d5f3-41cc-b015-d2ee5492d690",
+   "metadata": {},
+   "source": [
+    "#### Step 3: Build the docker image\n",
+    "Run the command: `docker build -t streamlit -f dockerFile .`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d25001da-7be1-4f50-87a3-6512a60d8c3f",
+   "metadata": {},
+   "source": [
+    "#### Step 4: Run the docker image in a container\n",
+    "\n",
+    "Run the command: `docker run -p 8501:8501 streamlit`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "31a5d344-3410-4e0f-b268-1c98979d70fe",
+   "metadata": {},
+   "source": [
+    "## Clone the docker image from Git Repo\n",
+    "\n",
+    "Let us create a docker image from following Git Repo: [https://github.com/streamlit/streamlit-example.git](https://github.com/streamlit/streamlit-example.git)\n",
+    "\n",
+    "#### Step 1: Create the docker file (let say using name `dockerFileFromGit`)\n",
+    "```dockerfile\n",
+    "# app/Dockerfile\n",
+    "\n",
+    "FROM python:3.9-slim\n",
+    "\n",
+    "WORKDIR /app\n",
+    "\n",
+    "RUN apt-get update && apt-get install -y \\\n",
+    "    build-essential \\\n",
+    "    curl \\\n",
+    "    software-properties-common \\\n",
+    "    git \\\n",
+    "    && rm -rf /var/lib/apt/lists/*\n",
+    "\n",
+    "RUN git clone https://github.com/streamlit/streamlit-example.git .\n",
+    "\n",
+    "RUN pip3 install -r requirements.txt\n",
+    "\n",
+    "EXPOSE 8501\n",
+    "\n",
+    "HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health\n",
+    "\n",
+    "ENTRYPOINT [\"streamlit\", \"run\", \"streamlit_app.py\", \"--server.port=8501\", \"--server.address=0.0.0.0\"]\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1f4b2010-543e-43dc-ac9c-81fc81dba6fe",
+   "metadata": {},
+   "source": [
+    "#### Step 3: Build the docker image\n",
+    "Run the command: `docker build -t streamlitFromGit -f dockerFileFromGit .`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9ac88085-7c82-46b4-91f7-66d9ac3a7247",
+   "metadata": {},
+   "source": [
+    "#### Step 4: Run the docker image in a container\n",
+    "\n",
+    "Run the command: `docker run -p 8501:8501 streamlitFromGit`"
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.10"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
