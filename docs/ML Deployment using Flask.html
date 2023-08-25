@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ML Deployment using Flask &mdash; Machine Learning Operations (MLOPs)  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Other options of deployment using Streamlit and Heroku – Platform as a Service" href="ML%20Deployment%20using%20Streamlit.html" />
+    <link rel="prev" title="Docker commands" href="Docker%20Commands.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Machine Learning Operations (MLOPs)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Docker%20Basics.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Docker%20Commands.html">Docker commands</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ML Deployment using Flask</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Deploy-the-ML-project-using-Flask">Deploy the ML project using Flask</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Deployment-of-House-Rate-Prediction">Deployment of House Rate Prediction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Flask">Flask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Step:1-Creation-for-HTML-form">Step:1 Creation for HTML form</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Step:2-Flask-Script">Step:2 Flask Script</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Deployment-of-house-rate-prediction-model-in-docker-using-Flask">Deployment of house rate prediction model in docker using <code class="docutils literal notranslate"><span class="pre">Flask</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ML%20Deployment%20using%20Streamlit.html">Other options of deployment using <code class="docutils literal notranslate"><span class="pre">Streamlit</span></code> and <code class="docutils literal notranslate"><span class="pre">Heroku</span></code> – Platform as a Service</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Machine Learning Operations (MLOPs)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>ML Deployment using Flask</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ML Deployment using Flask.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="ML-Deployment-using-Flask">
+<h1>ML Deployment using Flask<a class="headerlink" href="#ML-Deployment-using-Flask" title="Permalink to this heading"></a></h1>
+<section id="Deploy-the-ML-project-using-Flask">
+<h2>Deploy the ML project using Flask<a class="headerlink" href="#Deploy-the-ML-project-using-Flask" title="Permalink to this heading"></a></h2>
+<section id="Deployment-of-House-Rate-Prediction">
+<h3>Deployment of House Rate Prediction<a class="headerlink" href="#Deployment-of-House-Rate-Prediction" title="Permalink to this heading"></a></h3>
+<p>To predict the new data, we have to deploy the model (e.g., over the internet) so that the outside world can use it.</p>
+<p><img alt="FlaskICON" src="_images/FlaskIcon.png" /></p>
+<section id="Flask">
+<h4>Flask<a class="headerlink" href="#Flask" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p>Flask is a Python-based micro framework used for developing small-scale websites.</p></li>
+<li><p>Flask is very easy to make Restful APIs using python.</p></li>
+<li><p>As of now, we have developed a model i.e <code class="docutils literal notranslate"><span class="pre">model.pkl</span></code> , which can predict the house rate.</p></li>
+</ul>
+<p>Quick start project using flask: <a class="reference external" href="https://flask.palletsprojects.com/en/2.3.x/quickstart/">link</a></p>
+</section>
+<section id="Step:1-Creation-for-HTML-form">
+<h4>Step:1 Creation for HTML form<a class="headerlink" href="#Step:1-Creation-for-HTML-form" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p>We will now design a web application where the user will input the feature value – <code class="docutils literal notranslate"><span class="pre">house</span> <span class="pre">area</span></code> using HTML form with name <code class="docutils literal notranslate"><span class="pre">index.html</span></code>.</p></li>
+<li><p>The input data will be given to the model.</p></li>
+<li><p>The model will predict the house rate for the value feed by the user.</p></li>
+</ul>
+<html><body><h5><p>House Rate Prediction Form</p>
+</h5><div><form action="/result" method="POST"><p>House Area [in sq. feet] : range:[1500-15000]</p>
+</form></div></body></html><section id="index.html:">
+<h5>index.html:<a class="headerlink" href="#index.html:" title="Permalink to this heading"></a></h5>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>House Rate Prediction Form<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;/result&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;POST&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;area_feature&quot;</span><span class="p">&gt;</span>House Area [in sq. feet] : <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;area_feature&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;area_feature&quot;</span><span class="p">&gt;</span> range:[1500-15000]
+    <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Submit&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Once the data is posted from the form, it should be fed to the model.</p></li>
+<li><p>Further, the script can load the trained model.</p></li>
+<li><p>The script can then use the model to predict the house rate based on the feed data.</p></li>
+<li><p>The prediction is then displayed to the user based on <code class="docutils literal notranslate"><span class="pre">result.html</span></code> file.</p></li>
+</ul>
+<p><strong>result.html</strong></p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!doctype html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span> The predicted amount of house is {{ prediction }}<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="Step:2-Flask-Script">
+<h4>Step:2 Flask Script<a class="headerlink" href="#Step:2-Flask-Script" title="Permalink to this heading"></a></h4>
+<p>The script must do the following tasks</p>
+<ul class="simple">
+<li><p><em>Task-1:</em> Receive the data entered by the user in <code class="docutils literal notranslate"><span class="pre">X_test</span></code> array</p></li>
+<li><p><em>Task-2:</em> Make the prediction using following steps</p>
+<ul>
+<li><p>Load the <code class="docutils literal notranslate"><span class="pre">scalar</span></code> and <code class="docutils literal notranslate"><span class="pre">model</span></code> pickle files.</p></li>
+<li><p>Apply normalization on the <code class="docutils literal notranslate"><span class="pre">X_test</span></code> data</p></li>
+<li><p>Apply the <code class="docutils literal notranslate"><span class="pre">model.predict()</span></code> method on the <code class="docutils literal notranslate"><span class="pre">X_test_Normalized</span></code> data to obtain the prediction</p></li>
+</ul>
+</li>
+<li><p><em>Task-3:</em> return the prediction to render the display to the user using <code class="docutils literal notranslate"><span class="pre">result.html</span></code> template</p></li>
+</ul>
+<section id="Task-1:-Receive-the-data-entered-by-the-user-in-X_test-array">
+<h5>Task-1: Receive the data entered by the user in <code class="docutils literal notranslate"><span class="pre">X_test</span></code> array<a class="headerlink" href="#Task-1:-Receive-the-data-entered-by-the-user-in-X_test-array" title="Permalink to this heading"></a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">jsonify</span><span class="p">,</span> <span class="n">request</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/result&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">result</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">to_predict_list</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">to_predict_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">to_predict_list</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">to_predict_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">to_predict_list</span><span class="p">))</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;index.html&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="Task-2:-Make-the-prediction-using-following-steps">
+<h5>Task-2: Make the prediction using following steps<a class="headerlink" href="#Task-2:-Make-the-prediction-using-following-steps" title="Permalink to this heading"></a></h5>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>- Load the `scalar` and `model` pickle files.
+- Apply normalization on the `X_test` data
+- Apply the `model.predict()` method on the `X_test_Normalized` data to obtain the prediction
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="k">def</span> <span class="nf">ValuePredictor</span><span class="p">(</span><span class="n">to_predict_list</span><span class="p">):</span>
+    <span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">to_predict_list</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1">#Load the instance of Standarscalar object</span>
+    <span class="n">scaler</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;scaler.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+    <span class="c1">#Normalize the data</span>
+    <span class="n">X_test_Normalized</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+    <span class="n">loaded_model</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;model.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">loaded_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_Normalized</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="Task-3:-return-the-prediction-to-render-the-display-to-the-user-using-result.html-template">
+<h5>Task-3: return the prediction to render the display to the user using <code class="docutils literal notranslate"><span class="pre">result.html</span></code> template<a class="headerlink" href="#Task-3:-return-the-prediction-to-render-the-display-to-the-user-using-result.html-template" title="Permalink to this heading"></a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;result.html&quot;</span><span class="p">,</span> <span class="n">prediction</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="Combining-the-tasks:">
+<h5>Combining the tasks:<a class="headerlink" href="#Combining-the-tasks:" title="Permalink to this heading"></a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">jsonify</span><span class="p">,</span> <span class="n">request</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">ValuePredictor</span><span class="p">(</span><span class="n">to_predict_list</span><span class="p">):</span>
+    <span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">to_predict_list</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1">#Load the instance of Standarscalar object</span>
+    <span class="n">scaler</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;scaler.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+    <span class="c1">#Normalize the data</span>
+    <span class="n">X_test_Normalized</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+    <span class="n">loaded_model</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;model.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">loaded_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_Normalized</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/result&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">result</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">to_predict_list</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">to_predict_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">to_predict_list</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">to_predict_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">to_predict_list</span><span class="p">))</span>
+
+        <span class="n">prediction</span> <span class="o">=</span> <span class="n">ValuePredictor</span><span class="p">(</span><span class="n">to_predict_list</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;result.html&quot;</span><span class="p">,</span> <span class="n">prediction</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;index.html&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We will execute the flask application from local system using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flask --app script.py  run
+</pre></div>
+</div>
+</section>
+<section id="User-interface-for-getting-the-house-area-feature">
+<h5>User interface for getting the house area feature<a class="headerlink" href="#User-interface-for-getting-the-house-area-feature" title="Permalink to this heading"></a></h5>
+<p><img alt="Webpage_Flask1" src="_images/Flask_Response.png" /></p>
+<!-- empty raw cell --></section>
+<section id="Display-of-house-rate-prediction-to-user">
+<h5>Display of house rate prediction to user<a class="headerlink" href="#Display-of-house-rate-prediction-to-user" title="Permalink to this heading"></a></h5>
+<p><img alt="Webpage_Flask1" src="_images/Flask_Response.png" /></p>
+</section>
+</section>
+</section>
+</section>
+<section id="Deployment-of-house-rate-prediction-model-in-docker-using-Flask">
+<h2>Deployment of house rate prediction model in docker using <code class="docutils literal notranslate"><span class="pre">Flask</span></code><a class="headerlink" href="#Deployment-of-house-rate-prediction-model-in-docker-using-Flask" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>We will use the <code class="docutils literal notranslate"><span class="pre">Gunicorn</span></code> for deploying the ML project</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Green</span> <span class="pre">Unicorn</span></code> is a Python Web Server Gateway Interface HTTP server.</p></li>
+</ul>
+<p>Update the requirements.txt to include the following files:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>flask
+gunicorn
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">templates</span></code>: folder containing two html templates – index.html and result.html</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model.pkl</span></code>: pickle file of trained model</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>: a list of required libraries</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scaler.pkl</span></code>: pickle file of scalar object used for normalizing the data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">script.py</span></code>: flask script to host the model over the webpage</p></li>
+</ul>
+<div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="c">#Using the base image with Python 3.10</span>
+<span class="c"># FROM python:3.10</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">python:3.10</span>
+
+<span class="c">#Set our working directory as app</span>
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
+
+<span class="c"># Copy the model&#39;s directory and server.py files</span>
+<span class="c">#COPY requirements.txt ./requirements.txt</span>
+<span class="c">#COPY script.py ./script.py</span>
+<span class="c">#COPY model.pkl ./model.pkl</span>
+<span class="c">#COPY scaler.pkl ./scaler.pkl</span>
+
+<span class="k">COPY</span><span class="w"> </span>RequiredFilesForDocker ./
+
+<span class="c">#Installing Python packages through requirements.txt file</span>
+<span class="k">RUN</span><span class="w"> </span>pip install -r requirements.txt
+
+
+<span class="c">#Exposing port 5000 from the container</span>
+<span class="k">EXPOSE</span><span class="w"> </span><span class="s">5000</span>
+<span class="c">#Starting the Python application</span>
+<span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;gunicorn&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--bind&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;0.0.0.0:5000&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;script:app&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Now, build the above docker file using following docker command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar: $ sudo docker build -t house_rate_prediction_deployment -f dockerFile .
+</pre></div>
+</div>
+<!-- empty raw cell --><p>Now, build the above docker file using following docker command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar: $ sudo docker run --name hrp_d_container -p <span class="m">5000</span>:5000 house_rate_prediction_deployment
+</pre></div>
+</div>
+<p><em>Note:</em> Use -d to run it in detached mode.</p>
+<!-- empty raw cell --><p><strong>Ouput</strong></p>
+<p>HTML form to get value from user</p>
+<p><img alt="InputFromUSer" src="_images/Docker_Flask_WebPage.png" /></p>
+<p>View displaying the house rate prediction to the user</p>
+<p><img alt="Response" src="_images/Docker_Flask_Response.png" /></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.docker.com/compose/">Compose</a> is a tool for defining and running multi-container Docker applications.</p></li>
+<li><p>With Compose, you use a YAML file to configure your application’s services. Then, with a single command, you create and start all the services from your configuration.</p></li>
+<li><p>Compose works in all environments; production, staging, development, testing, as well as CI workflows. It also has commands for managing the whole lifecycle of your application:</p>
+<ul>
+<li><p>Start, stop, and rebuild services</p></li>
+<li><p>View the status of running services</p></li>
+<li><p>Stream the log output of running services</p></li>
+<li><p>Run a one-off command on a service</p></li>
+</ul>
+</li>
+</ul>
+<p>The key features of Compose that make it effective are:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>- Have multiple isolated environments on a single host
+- Preserve volume data when containers are created
+- Only recreate containers that have changed
+- Support variables and moving a composition between environments
+</pre></div>
+</div>
+<p>Create the new file named <code class="docutils literal notranslate"><span class="pre">compose.yaml</span></code></p>
+<p>Now, place the following code into the file</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hrp_d_Container</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">house_rate_prediction_deployment</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000:5000</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Then, run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar: $ sudo docker compose -f compose.yaml up
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Docker%20Commands.html" class="btn btn-neutral float-left" title="Docker commands" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ML%20Deployment%20using%20Streamlit.html" class="btn btn-neutral float-right" title="Other options of deployment using Streamlit and Heroku – Platform as a Service" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Pruthvish Rajput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

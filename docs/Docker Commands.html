@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docker commands &mdash; Machine Learning Operations (MLOPs)  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ML Deployment using Flask" href="ML%20Deployment%20using%20Flask.html" />
+    <link rel="prev" title="Docker" href="Docker%20Basics.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Machine Learning Operations (MLOPs)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Docker%20Basics.html">Docker</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Docker commands</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Description-of-docker-commands">Description of docker commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#docker-pull">docker pull</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-images">docker images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-ps">docker ps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-rmi">docker rmi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-start">docker start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-stop">docker stop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-inspect">docker inspect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">docker stop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-prune">docker prune</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Deploy-the-local-docker-registry">Deploy the local docker registry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ML%20Deployment%20using%20Flask.html">ML Deployment using Flask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ML%20Deployment%20using%20Streamlit.html">Other options of deployment using <code class="docutils literal notranslate"><span class="pre">Streamlit</span></code> and <code class="docutils literal notranslate"><span class="pre">Heroku</span></code> – Platform as a Service</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Machine Learning Operations (MLOPs)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Docker commands</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Docker Commands.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Docker-commands">
+<h1>Docker commands<a class="headerlink" href="#Docker-commands" title="Permalink to this heading"></a></h1>
+<section id="Description-of-docker-commands">
+<h2>Description of docker commands<a class="headerlink" href="#Description-of-docker-commands" title="Permalink to this heading"></a></h2>
+<section id="docker-pull">
+<h3>docker pull<a class="headerlink" href="#docker-pull" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>The command to pull the image from docker repository.</p></li>
+</ul>
+<p>example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker pull python
+</pre></div>
+</div>
+</section>
+<section id="docker-images">
+<h3>docker images<a class="headerlink" href="#docker-images" title="Permalink to this heading"></a></h3>
+<p>List all the images in current docker daemon</p>
+<p>example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker images
+</pre></div>
+</div>
+</section>
+<section id="docker-ps">
+<h3>docker ps<a class="headerlink" href="#docker-ps" title="Permalink to this heading"></a></h3>
+<p>List all the containers currently executing in the docker daemon</p>
+<p>example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker ps
+foo@bar:$ docker ps -a
+</pre></div>
+</div>
+</section>
+<section id="docker-rmi">
+<h3>docker rmi<a class="headerlink" href="#docker-rmi" title="Permalink to this heading"></a></h3>
+<p>Delete the selected images</p>
+<p>example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker rmi &lt;image id&gt;
+</pre></div>
+</div>
+</section>
+<section id="docker-start">
+<h3>docker start<a class="headerlink" href="#docker-start" title="Permalink to this heading"></a></h3>
+<p>Start one or more stopped containers</p>
+<p>example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker start &lt;container ids&gt;
+</pre></div>
+</div>
+</section>
+<section id="docker-stop">
+<h3>docker stop<a class="headerlink" href="#docker-stop" title="Permalink to this heading"></a></h3>
+<p>Stop one or more currently running containers</p>
+<p>example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker stop &lt;container ids&gt;
+</pre></div>
+</div>
+</section>
+<section id="docker-inspect">
+<h3>docker inspect<a class="headerlink" href="#docker-inspect" title="Permalink to this heading"></a></h3>
+<p>Return low-level information on Docker objects</p>
+<p>example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker inspect &lt;container id&gt;
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h3>docker stop<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p>Stop one or more currently running containers</p>
+<p>example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker stop &lt;container ids&gt;
+</pre></div>
+</div>
+</section>
+<section id="docker-prune">
+<h3>docker prune<a class="headerlink" href="#docker-prune" title="Permalink to this heading"></a></h3>
+<p>Remove all stopped containers</p>
+<p>example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker docker container prune
+</pre></div>
+</div>
+</section>
+</section>
+<section id="Deploy-the-local-docker-registry">
+<h2>Deploy the local docker registry<a class="headerlink" href="#Deploy-the-local-docker-registry" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Run a local registry:</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-d</span> <span class="pre">-p</span> <span class="pre">5000:5000</span> <span class="pre">--restart=always</span> <span class="pre">--name</span> <span class="pre">registry</span> <span class="pre">registry:2</span></code></p>
+<ul class="simple">
+<li><p>Copy an image from Docker Hub to your registry</p></li>
+<li><p>Pull the ubuntu:16.04 image from Docker Hub.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">ubuntu:16.04</span></code></p>
+<ul class="simple">
+<li><p>Tag the image as <code class="docutils literal notranslate"><span class="pre">localhost:5000/my-ubuntu</span></code></p></li>
+<li><p>This creates an additional tag for the existing image.</p></li>
+<li><p>When the first part of the tag is a hostname and port, Docker interprets this as the location of a registry, when pushing.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">tag</span> <span class="pre">ubuntu:16.04</span> <span class="pre">localhost:5000/my-ubuntu</span></code></p>
+<ul class="simple">
+<li><p>Push the image to the local registry running at localhost:5000:</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">push</span> <span class="pre">localhost:5000/my-ubuntu</span></code></p>
+<ul class="simple">
+<li><p>Remove the locally-cached ubuntu:16.04 and localhost:5000/my-ubuntu images</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">image</span> <span class="pre">remove</span> <span class="pre">ubuntu:16.04</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">image</span> <span class="pre">remove</span> <span class="pre">localhost:5000/my-ubuntu</span></code></p>
+<ul class="simple">
+<li><p>Stop a local registry</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">container</span> <span class="pre">stop</span> <span class="pre">registry</span></code></p>
+<ul class="simple">
+<li><p>To remove the container, use docker container rm.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">container</span> <span class="pre">stop</span> <span class="pre">registry</span> <span class="pre">&amp;&amp;</span> <span class="pre">docker</span> <span class="pre">container</span> <span class="pre">rm</span> <span class="pre">-v</span> <span class="pre">registry</span></code></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Docker%20Basics.html" class="btn btn-neutral float-left" title="Docker" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ML%20Deployment%20using%20Flask.html" class="btn btn-neutral float-right" title="ML Deployment using Flask" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Pruthvish Rajput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

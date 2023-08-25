@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docker &mdash; Machine Learning Operations (MLOPs)  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Docker commands" href="Docker%20Commands.html" />
+    <link rel="prev" title="Welcome to Machine Learning Operations (MLOPs)’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Machine Learning Operations (MLOPs)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Docker</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Docker’s-original-3-innovations">Docker’s original 3 innovations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Docker-Images">Docker Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Docker-Registry">Docker Registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Docker-Container">Docker Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Requirements-of-Docker">Requirements of Docker</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#The-Problem-of-Isolation">The Problem of Isolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Problem-of-Environment">Problem of Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Problem-of-speed">Problem of speed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#DevOps">DevOps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Docker-VS-Virtual-Machine">Docker VS Virtual Machine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Docker-Work-Flow">Docker Work Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Docker%20Commands.html">Docker commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ML%20Deployment%20using%20Flask.html">ML Deployment using Flask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ML%20Deployment%20using%20Streamlit.html">Other options of deployment using <code class="docutils literal notranslate"><span class="pre">Streamlit</span></code> and <code class="docutils literal notranslate"><span class="pre">Heroku</span></code> – Platform as a Service</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Machine Learning Operations (MLOPs)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Docker</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Docker Basics.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Docker">
+<h1>Docker<a class="headerlink" href="#Docker" title="Permalink to this heading"></a></h1>
+<p><img alt="Docker" src="_images/DockerLogo.png" /></p>
+<section id="Docker’s-original-3-innovations">
+<h2>Docker’s original 3 innovations<a class="headerlink" href="#Docker’s-original-3-innovations" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Docker was not the inventor of containers, but it made them easier to use with the three steps to creating and running them.</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>Image: It aids you in packaging an application (with all its dependencies).</p></li>
+<li><p>Registries: It helps to distribute that app around to all the places you need to run it.</p></li>
+<li><p>Containers: It runs that app in a highly reproducible way.</p></li>
+</ol>
+<p>Docker calls this the <code class="docutils literal notranslate"><span class="pre">Build,</span> <span class="pre">Ship</span> <span class="pre">and</span> <span class="pre">Run</span></code> life cycle.</p>
+<p>These are the basics that all other container technology is built on. e.g., - Kubernetes - Swarm - Helm</p>
+<p><img alt="DockerImages" src="_images/DockerBasicsImage.png" /></p>
+</section>
+<section id="Docker-Images">
+<h2>Docker Images<a class="headerlink" href="#Docker-Images" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>The Docker Image: Universal app packaging</p></li>
+<li><p>It’s called a “Docker image”, the standards name “OCI Image”, or just “image” for short.</p>
+<ul>
+<li><p>Docker uses a list of instructions, called a Docker file</p></li>
+</ul>
+</li>
+<li><p>It is similar to a shell script, and it layers those instructions on top of each other until it has everything you need to run the application, including all its system dependencies.</p></li>
+<li><p>Including the dependencies is a key differentiator between Docker and many previous packaging systems.</p>
+<ul>
+<li><p>It helps prevent the (only) “works on my machine” problem of two different environments having slightly different sets of dependencies.</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="DockerImage" src="_images/DockerImage.png" /></p>
+<ul class="simple">
+<li><p>If it was a Python app you wanted to build, then the image would contain the app itself, and all the Python dependencies the app needs.</p></li>
+<li><p>The key distinction is it also includes the exact Python version and system libraries to correctly run Python.</p></li>
+<li><p>Everything except the OS kernel and hardware drivers is included.</p></li>
+<li><p>Even metadata on how to start the app, default environment variables, and what ports it listens on are included.</p></li>
+</ul>
+</section>
+<section id="Docker-Registry">
+<h2>Docker Registry<a class="headerlink" href="#Docker-Registry" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>The Registry: Easy app distribution</p></li>
+<li><p>Called a “Docker registry”, or just “registry” for short.</p></li>
+<li><p>This innovation was the key to connecting our building of images on one machine to running our containers on another.</p>
+<ul>
+<li><p>Now that we have built an imarun ran it on our local machine, how do we get it on all the other machines?</p></li>
+<li><p>How can I be sure that the rest of my team, my CI testing, and all my servers run the exact same image?</p></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><p>The registry is an HTTP-based package manager that works like apt, yum, npm, and other package managers.</p></li>
+<li><p>You can push an image to it, and then pull an image somewhere else.</p></li>
+<li><p>The registry protocol is efficient.</p>
+<ul>
+<li><p>It only pushes and pulls the changed parts (layers), and stores the image in the machine’s local cache for the fast running of new containers.</p></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><p>The images and the registry as the universal package manager for modern computing</p>
+<ul>
+<li><p>we may want to build, download, and run any app on any system.</p></li>
+<li><p>e.g., building and running on</p>
+<ul>
+<li><p>Linux</p></li>
+<li><p>MacOS</p></li>
+<li><p>Windows</p></li>
+<li><p>in the cloud</p></li>
+<li><p>in your datacenter</p></li>
+<li><p>on a mainframe</p></li>
+<li><p>a tiny Raspberry Pi.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="Docker-Container">
+<h2>Docker Container<a class="headerlink" href="#Docker-Container" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>The Docker Container: Easy app running</p></li>
+<li><p>Called a “Docker container”, the standards name “OCI Container”, or just “container” for short. It’s not called a “docker”, or “dockers”.</p></li>
+<li><p>Docker will launch your container image into a new running container and use the command you specified in the Dockerfile to start it.</p></li>
+</ul>
+<ul class="simple">
+<li><p>It uses two Linux Kernel features, to isolate your app so it can’t see the rest of the host by default. namespaces</p>
+<ul>
+<li><p>cgroups (control groups),</p></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><p>To the app, the only files it sees are the ones in the container image.</p></li>
+<li><p>It sees no other processes outside the container and even gets its own virtual ethernet adapter and private IP.</p></li>
+<li><p>It’s not virtualization. Its application isolation, similar to chroot, FreeBSD jails, or Solaris zones, which all came before Docker.</p></li>
+<li><p>You can start many of these containers from the same container image, on the same system.</p>
+<ul>
+<li><p>They’ll all be isolated from each other. File changes in one container don’t affect the files in another.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="Requirements-of-Docker">
+<h2>Requirements of Docker<a class="headerlink" href="#Requirements-of-Docker" title="Permalink to this heading"></a></h2>
+<ul>
+<li><p>Docker needed to exist because the old ways were full of friction and complexity when met with the modern area of software development and the speed at which we needed to operate.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>The Problem of Isolation
+The Problem of Environments
+The Problem of Speed
+</pre></div>
+</div>
+</li>
+</ul>
+<section id="The-Problem-of-Isolation">
+<h3>The Problem of Isolation<a class="headerlink" href="#The-Problem-of-Isolation" title="Permalink to this heading"></a></h3>
+<p>Need of different software versions</p>
+<p><img alt="Images/Docker/IsolationProblem_1.png" src="_images/IsolationProblem_2.png" /></p>
+<p><img alt="Images/Docker/IsolationProblem_1.png" src="_images/IsolationProblem_2.png" /></p>
+</section>
+<section id="Problem-of-Environment">
+<h3>Problem of Environment<a class="headerlink" href="#Problem-of-Environment" title="Permalink to this heading"></a></h3>
+<p><img alt="Images/Docker/EnvProblem_1.png" src="_images/EnvProblem_1.png" /></p>
+<p><img alt="Images/Docker/EnvProblem_2.png" src="_images/EnvProblem_2.png" /></p>
+</section>
+<section id="Problem-of-speed">
+<h3>Problem of speed<a class="headerlink" href="#Problem-of-speed" title="Permalink to this heading"></a></h3>
+<p><img alt="Images/Docker/SpeedProblem.png" src="_images/SpeedProblem.png" /></p>
+<ul class="simple">
+<li><p>By combining the ideas of the image, registry, and container, Docker (and the tooling it inspired) improves the time-to-complete in nearly every part of the software lifecycle:</p>
+<ul>
+<li><p>Develop faster</p></li>
+<li><p>Build faster</p></li>
+<li><p>Test faster</p></li>
+<li><p>Deploy faster</p></li>
+<li><p>Update faster</p></li>
+<li><p>Recover faster</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="DevOps">
+<h2>DevOps<a class="headerlink" href="#DevOps" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>DevOps is a set of practices, guidelines and culture designed to reduce the gap between software development and software operations.</p></li>
+<li><p>If Both teams work together, productivity will increase</p></li>
+<li><p>DevOps established five goals.</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>Reduce organizational silos</p></li>
+<li><p>Accept failure as normal</p></li>
+<li><p>Implement gradual changes</p></li>
+<li><p>Leverage tooling and automation</p></li>
+<li><p>Measure everything</p></li>
+</ol>
+<p>Docker is software development platform - Here you packaged app in images - Container use image to start application - Containers run on any operating system - It works exactly same independent of OS, machine, Environment - Lightweight compared to VM - Easier to maintain &amp; deploy - Docker works with any language, runtime, OS</p>
+</section>
+<section id="Docker-VS-Virtual-Machine">
+<h2>Docker VS Virtual Machine<a class="headerlink" href="#Docker-VS-Virtual-Machine" title="Permalink to this heading"></a></h2>
+<p><img alt="Images/Docker/Docker_Vs_VM.png" src="_images/Docker_Vs_VM.png" /></p>
+</section>
+<section id="Docker-Work-Flow">
+<h2>Docker Work Flow<a class="headerlink" href="#Docker-Work-Flow" title="Permalink to this heading"></a></h2>
+<p><img alt="Images/Docker/DockerWorkFlow.png" src="_images/DockerWorkFlow.png" /></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Machine Learning Operations (MLOPs)’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Docker%20Commands.html" class="btn btn-neutral float-right" title="Docker commands" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Pruthvish Rajput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
