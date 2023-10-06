@@ -14,6 +14,7 @@ Welcome to Machine Learning Operations (MLOPs)'s documentation!
    Docker Commands.ipynb
    ML Deployment using Flask.ipynb
    ML Deployment using Streamlit.ipynb
+   DockerSwarm.ipynb
    Guide to install docker in Ubuntu VirtualBox
 
 

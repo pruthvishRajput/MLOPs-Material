@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docker Swarm &mdash; Machine Learning Operations (MLOPs)  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Guide to install docker in Ubuntu VirtualBox" href="Guide%20to%20install%20docker%20in%20Ubuntu%20VirtualBox.html" />
+    <link rel="prev" title="Other options of deployment using Streamlit and Heroku – Platform as a Service" href="ML%20Deployment%20using%20Streamlit.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Machine Learning Operations (MLOPs)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Docker%20Basics.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Docker%20Commands.html">Docker commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ML%20Deployment%20using%20Flask.html">ML Deployment using Flask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ML%20Deployment%20using%20Streamlit.html">Other options of deployment using <code class="docutils literal notranslate"><span class="pre">Streamlit</span></code> and <code class="docutils literal notranslate"><span class="pre">Heroku</span></code> – Platform as a Service</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Docker Swarm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Tutorial-of-docker-swarm-from-the-Docker-Official-Documentation">Tutorial of docker swarm from the Docker Official Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Create-your-own-swarm-cluster-and-Deploy-app-in-Docker-Swarm">Create your own swarm cluster and Deploy app in Docker Swarm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Step-1:-Create-the-swarm-cluster-using-following-command:">Step-1: Create the swarm cluster using following command:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Step-2:-Add-the-nodes-as-the-managers-and-the-workers">Step-2: Add the nodes as the managers and the workers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Step-3:-Deploy-the-service-for-house-rate-prediction">Step-3: Deploy the service for house rate prediction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Output-of-docker-service">Output of docker service</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Step-4:-Scale-the-service">Step 4: Scale the service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Step-5:-list-the-services-and-inspect-them">Step 5: list the services and inspect them</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Step-6:-Information-about-the-service:">Step 6: Information about the service:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Step-7:-Delete-the-service">Step 7: Delete the service</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Guide%20to%20install%20docker%20in%20Ubuntu%20VirtualBox.html">Guide to install docker in Ubuntu VirtualBox</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Machine Learning Operations (MLOPs)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Docker Swarm</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/DockerSwarm.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Docker-Swarm">
+<h1>Docker Swarm<a class="headerlink" href="#Docker-Swarm" title="Permalink to this heading"></a></h1>
+<section id="Tutorial-of-docker-swarm-from-the-Docker-Official-Documentation">
+<h2>Tutorial of docker swarm from the Docker Official Documentation<a class="headerlink" href="#Tutorial-of-docker-swarm-from-the-Docker-Official-Documentation" title="Permalink to this heading"></a></h2>
+<p>The tutorial of docker swarm can be refered from the following <a class="reference external" href="https://docs.docker.com/engine/swarm/swarm-tutorial/">link</a>:</p>
+<p>It majorly covers: - <a class="reference external" href="https://docs.docker.com/engine/swarm/swarm-tutorial/">Get started with swarm mode</a> - <a class="reference external" href="https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/">Create a swarm</a> - <a class="reference external" href="https://docs.docker.com/engine/swarm/swarm-tutorial/add-nodes/">Add nodes to the swarm</a> - <a class="reference external" href="https://docs.docker.com/engine/swarm/swarm-tutorial/deploy-service/">Deploy a service</a> - <a class="reference external" href="https://docs.docker.com/engine/swarm/swarm-tutorial/inspect-service/">Inspect the service</a> - <a class="reference external" href="https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/">Scale the
+service in the swarm</a> - <a class="reference external" href="https://docs.docker.com/engine/swarm/swarm-tutorial/delete-service/">Delete the service running on the swarm</a> - <a class="reference external" href="https://docs.docker.com/engine/swarm/swarm-tutorial/rolling-update/">Apply rolling updates to a service</a> - <a class="reference external" href="https://docs.docker.com/engine/swarm/swarm-tutorial/drain-node/">Drain a node on the swarm</a></p>
+<p>One must understand the different docker command to create the swarm network, add the nodes to the swarm network, create the service, inspect the service, apply the rolling update, and to delete the service.</p>
+</section>
+<section id="Create-your-own-swarm-cluster-and-Deploy-app-in-Docker-Swarm">
+<h2>Create your own swarm cluster and Deploy app in Docker Swarm<a class="headerlink" href="#Create-your-own-swarm-cluster-and-Deploy-app-in-Docker-Swarm" title="Permalink to this heading"></a></h2>
+<p>Here, we create our own swarm cluster and deploy the house rate prediction model in the docker swarm using the following steps.</p>
+<section id="Step-1:-Create-the-swarm-cluster-using-following-command:">
+<h3>Step-1: Create the swarm cluster using following command:<a class="headerlink" href="#Step-1:-Create-the-swarm-cluster-using-following-command:" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker swarm init --advertise-addr &lt;MANAGER-IP&gt;
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">&lt;MANAGER-IP&gt;</span></code> is the IP address of your node machine. The above command will give the output as following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Swarm initialized: current node <span class="o">(</span>dxn1zf6l61qsb1josjja83ngz<span class="o">)</span> is now a manager.
+
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join <span class="se">\</span>
+    --token SWMTKN-1-49nj1cmql0jkz5s954yi3oex3nedyz0fb0xx14ie39trti4wxv-8vxv8rssmk743ojnwacrr2e7c <span class="se">\</span>
+    <span class="m">192</span>.168.99.100:2377
+
+To add a manager to this swarm, run <span class="s1">&#39;docker swarm join-token manager&#39;</span> and follow the instructions.
+</pre></div>
+</div>
+</section>
+<section id="Step-2:-Add-the-nodes-as-the-managers-and-the-workers">
+<h3>Step-2: Add the nodes as the managers and the workers<a class="headerlink" href="#Step-2:-Add-the-nodes-as-the-managers-and-the-workers" title="Permalink to this heading"></a></h3>
+<p>The next step is to add the new nodes in the swarm network using the information obtained as a response in the above command. The <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">swarm</span> <span class="pre">join</span></code> command with the appropirate response information needs to be executed from the node moachine that needs to join the swarm network.</p>
+</section>
+<section id="Step-3:-Deploy-the-service-for-house-rate-prediction">
+<h3>Step-3: Deploy the service for house rate prediction<a class="headerlink" href="#Step-3:-Deploy-the-service-for-house-rate-prediction" title="Permalink to this heading"></a></h3>
+<p>The next step is to deploy the docker service <code class="docutils literal notranslate"><span class="pre">house_rate_prediction_service</span></code> for house rate prediction using the docker image <code class="docutils literal notranslate"><span class="pre">house_rate_prediction_deploment</span></code> on the <code class="docutils literal notranslate"><span class="pre">port</span> <span class="pre">5000</span></code> using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker service create --replicas <span class="m">1</span> --name house_rate_prediction_service -p <span class="m">5000</span> house_rate_prediction_deploment
+</pre></div>
+</div>
+<section id="Output-of-docker-service">
+<h4>Output of docker service<a class="headerlink" href="#Output-of-docker-service" title="Permalink to this heading"></a></h4>
+<p>After, the successful convergence of the service, one may attemp to use the house rate prediction model which is deployed on the on the following link: <code class="docutils literal notranslate"><span class="pre">0.0.0.0:5000/</span></code></p>
+<p>HTML form to get value from user</p>
+<p><img alt="InputFromUSer" src="_images/Docker_Flask_WebPage.png" /></p>
+<p>View displaying the house rate prediction to the user</p>
+<p><img alt="Response" src="_images/Docker_Flask_Response.png" /></p>
+</section>
+</section>
+<section id="Step-4:-Scale-the-service">
+<h3>Step 4: Scale the service<a class="headerlink" href="#Step-4:-Scale-the-service" title="Permalink to this heading"></a></h3>
+<p>Let us assume that we want to scale the replica of the docker service corresponding to the house rate prediction to 10. It could be achieved using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker service scale <span class="nv">house_rate_prediction_service</span><span class="o">=</span><span class="m">10</span>
+</pre></div>
+</div>
+</section>
+<section id="Step-5:-list-the-services-and-inspect-them">
+<h3>Step 5: list the services and inspect them<a class="headerlink" href="#Step-5:-list-the-services-and-inspect-them" title="Permalink to this heading"></a></h3>
+<p>In this step, you will list all the services of the docker swarm and inspect the <code class="docutils literal notranslate"><span class="pre">house_rate_prediction_service</span></code> service.</p>
+<p>Command to list all the services:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker service ls
+</pre></div>
+</div>
+<p>Command to inspect the service:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker service inspect --pretty house_rate_prediction_service
+</pre></div>
+</div>
+</section>
+<section id="Step-6:-Information-about-the-service:">
+<h3>Step 6: Information about the service:<a class="headerlink" href="#Step-6:-Information-about-the-service:" title="Permalink to this heading"></a></h3>
+<p>To check which node is executing the service <code class="docutils literal notranslate"><span class="pre">house_rate_prediction_service</span></code>, execute the following command in the terminal of manager node:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker service ps house_rate_prediction_service
+</pre></div>
+</div>
+</section>
+<section id="Step-7:-Delete-the-service">
+<h3>Step 7: Delete the service<a class="headerlink" href="#Step-7:-Delete-the-service" title="Permalink to this heading"></a></h3>
+<p>In the final step, we delete the <code class="docutils literal notranslate"><span class="pre">house_rate_prediction_service</span></code> from the docker swarm.</p>
+<p>Command to delete the service:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker service rm house_rate_prediction_service
+</pre></div>
+</div>
+<p>Finally check whether <code class="docutils literal notranslate"><span class="pre">house_rate_prediction_service</span></code> is deleted or not using following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>foo@bar:$ docker service ps house_rate_prediction_service
+</pre></div>
+</div>
+<p>The above command would return empty list indicating that there is no node that executes the <code class="docutils literal notranslate"><span class="pre">house_rate_prediction_service</span></code> service.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ML%20Deployment%20using%20Streamlit.html" class="btn btn-neutral float-left" title="Other options of deployment using Streamlit and Heroku – Platform as a Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Guide%20to%20install%20docker%20in%20Ubuntu%20VirtualBox.html" class="btn btn-neutral float-right" title="Guide to install docker in Ubuntu VirtualBox" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Pruthvish Rajput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
